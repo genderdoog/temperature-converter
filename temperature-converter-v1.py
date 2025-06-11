@@ -15,10 +15,11 @@ class Program:
         '''Set up the GUI'''
         # Main window setup
         self.root = Tk()
-        self.root.title("Temperature converter")
+        self.root.title("Temperature Converter")
         
         # Container for frames
         self.container = Frame(self.root)
+        self.container.grid(row=0,column=0)
         
         # Dictionary to hold frames
         self.frames = {}
@@ -32,7 +33,7 @@ class Program:
         
     def show_frame(self, name):
         '''display the required frame from the dictionary'''
-        frame = self.frames[name]
+        frame = self.frames[name] 
         frame.tkraise()
         
     def run(self):
@@ -40,10 +41,37 @@ class Program:
         self.root.mainloop()
         
     def create_main_frame(self):
-        pass
+        '''Create main menu'''
+        # Create a frame for widgets of main menu
+        frame = Frame(self.container)
+        frame.grid(row=0,column=0)
+        
+        # Heading
+        title = Label(frame, text="Temperature Converter")
+        title.grid(row=0,column=0, columnspan=2)
+        
+        # Buttons
+        # To change screen to centigrade
+        button_toC = Button(frame, text="to Centigrade", 
+                            command=lambda: self.show_frame("to_cFrame"))
+        button_toC.grid(row = 1, column = 0)
+        
+        # To change screen to centigrade
+        button_toF = Button(frame, text="to Fahrenheit")
+        button_toF.grid(row = 1, column = 1)
+        
+        # Return frame to show to user
+        return frame
         
     def create_to_cFrame(self):
-        pass
+        frame = Frame(self.container)
+        frame.grid(row = 0, column = 0)
+        
+        # Heading
+        title = Label(frame, text="convert to C")
+        title.grid(row = 0, column = 0)
+        
+        return frame
     
     def create_to_fFrame(self):
         pass
