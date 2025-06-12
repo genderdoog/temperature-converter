@@ -57,7 +57,8 @@ class Program:
         button_toC.grid(row = 1, column = 0)
         
         # To change screen to centigrade
-        button_toF = Button(frame, text="to Fahrenheit")
+        button_toF = Button(frame, text="to Fahrenheit",
+                            command=lambda: self.show_frame("to_fFrame"))
         button_toF.grid(row = 1, column = 1)
         
         # Return frame to show to user
@@ -71,7 +72,7 @@ class Program:
         
         # Initialise the result label
         self.to_Cresult = IntVar()
-        self.to_Cresult.set("Result will appear here") # Set it to nothing when program first starts         
+        self.to_Cresult.set("Result will appear here (celsius result)") # Set it to nothing when program first starts         
         
         # Heading
         self.title = Label(frame, text="convert to C")
@@ -91,7 +92,7 @@ class Program:
         self.back_button.grid(row = 2, column = 1)
         
         # Reset button
-        self.reset_button = Button(frame, text = "Reset")
+        self.reset_button = Button(frame, text = "Reset", command = self.reset_entry)
         self.reset_button.grid(row = 2, column = 2)
         
         # Result label
@@ -101,16 +102,64 @@ class Program:
         return frame
     
     def create_to_fFrame(self):
-        pass
+        '''Create converting celsius to fahrenheit window'''
+        # Set up frame
+        frame = Frame(self.container)
+        frame.grid(row = 0, column = 0, sticky="NSEW") # We use sticky so that it fills up the whole window
+        
+        # Initialise the result label
+        self.to_Fresult = IntVar()
+        self.to_Fresult.set("Result will appear here (fahrenheit)") # Set it to nothing when program first starts         
+        
+        # Heading
+        self.title = Label(frame, text="convert to F")
+        self.title.grid(row = 0, column = 0, columnspan = 3, sticky="NESW")
+        
+        # User input box
+        self.entry_box = Entry(frame)
+        self.entry_box.grid(row = 1, column = 0, columnspan = 3, sticky="NESW")
+        
+        # Buttons
+        # Calculate button
+        self.calculate_button = Button(frame, text = "Calculate", command = self.convert_toF)
+        self.calculate_button.grid(row = 2, column = 0)
+        
+        # Back button (return to main menu)
+        self.back_button = Button(frame, text = "Back", command=lambda: self.show_frame("MainFrame"))
+        self.back_button.grid(row = 2, column = 1)
+        
+        # Reset button
+        self.reset_button = Button(frame, text = "Reset", command = self.reset_entry)
+        self.reset_button.grid(row = 2, column = 2)
+        
+        # Result label
+        self.result_label = Label(frame, textvariable = self.to_Fresult)
+        self.result_label.grid(row = 3, column = 0, columnspan=3, sticky="NESW")        
+    
+        return frame
+    
     
     def convert_toC(self):
         '''Converts temperature from fahrenheit to celsius'''
+        self.fahrenheit = int(self.entry_box.get()) # Get user input
+        result = (self.fahrenheit - 32) * (5/9) # Calculate result
+        
+        self.to_Cresult.set(result) # Change the output label to answer
+        
+        
+    def convert_toF(self):
+        '''Converts temperature from celsius to fahrenheit'''
         self.celsius = int(self.entry_box.get()) # Get user input
-        result = (self.celsius - 32) * (5/9) # Calculate result
-        print(result)
+        result = (self.celsius * (9/5)) + 32 # Calculate result
         
-        self.result_label.set(result) # Change the output label to answer
+        self.to_Fresult.set(result) # Change the output label to answer
         
+        
+    def reset_entry(self):
+        '''Clear entry boxes and output label'''
+        self.entry_box.delete(0, END) # Clears user input
+        self.to_Cresult.set("") # Resets to blank input
+        self.to_Fresult.set("")
         
         
 # Main program
