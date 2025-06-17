@@ -214,7 +214,7 @@ class Program:
                 self.to_Cresult.set(f"{result} C") # Change the output label to answer
         
         except ValueError: # Inform user if input is not valid
-            self.to_Fresult.set("ERROR: Enter only numbers") 
+            self.to_Cresult.set("ERROR: Enter only numbers") 
             
             
     def convert_toF(self):
@@ -238,12 +238,12 @@ class Program:
         # If we want to clear fahrenheit calculation
         if which_entry_box == "fahrenheit":
             self.entry_box.delete(0, END) # Clears user input
-            self.to_Fresult.set("") # Resets output to nothing
+            self.to_Fresult.set("Result will appear here") # Resets output to nothing
         
         # If we want to clear celsius calculation
         elif which_entry_box == "celsius":
             self.toC_entry_box.delete(0, END) # Clears user input
-            self.to_Cresult.set("") # Resets output to nothing
+            self.to_Cresult.set("Result will appear here") # Resets output to nothing
         
         
 # Main program
