@@ -9,6 +9,15 @@ Version 1: set up the frames and make the buttons work
 
 from tkinter import * 
 
+# Font for buttons
+FONT1 = "Arial 10 bold"
+
+# Font for heading in main menu
+FONT2 = "Arial 17 bold"
+
+# Padding for buttons
+PADDING = 10
+
 class Program:
     
     def __init__(self):
@@ -54,20 +63,24 @@ class Program:
         frame = Frame(self.container)
         frame.grid(row = 0, column = 0, sticky="NESW")
         
+        # Used in conjunction with sticky to make it fill the window
+        frame.columnconfigure([0,1], minsize=150)
+        frame.rowconfigure([0,1], minsize=50)
+        
         # Heading
-        title = Label(frame, text="Temperature Converter")
+        title = Label(frame, text="Temperature Converter", font=FONT2)
         title.grid(row = 0, column = 0, columnspan=2)
         
         # Buttons
         # To change screen to centigrade
-        button_toC = Button(frame, text="to Centigrade", 
+        button_toC = Button(frame, text="to Centigrade", bg="yellow", font=FONT1,
                             command=lambda: self.show_frame("to_cFrame"))
-        button_toC.grid(row = 1, column = 0)
+        button_toC.grid(row = 1, column = 0, sticky="NESW", padx=PADDING, pady=PADDING)
         
         # To change screen to centigrade
-        button_toF = Button(frame, text="to Fahrenheit",
+        button_toF = Button(frame, text="to Fahrenheit", bg="#FFB3B3", font=FONT1,
                             command=lambda: self.show_frame("to_fFrame"))
-        button_toF.grid(row = 1, column = 1)
+        button_toF.grid(row = 1, column = 1, sticky="NESW", padx=PADDING, pady=PADDING)
         
         # Return frame to show to user
         return frame
@@ -78,29 +91,38 @@ class Program:
         frame = Frame(self.container)
         frame.grid(row = 0, column = 0, sticky="NSEW") # We use sticky so that it fills up the whole window
         
+        # Make all the buttons the same size
+        frame.columnconfigure([0,1,2], minsize=100)
+        
+        # Configure height of entrybox
+        frame.rowconfigure([1], minsize=25)
+        
+        # configure height of buttons
+        frame.rowconfigure([2], minsize=33)
+        
         # Heading
-        self.title = Label(frame, text="convert to C")
+        self.title = Label(frame, text="Enter the temperature in Fahrenheit")
         self.title.grid(row = 0, column = 0, columnspan = 3, sticky="NESW")
         
         # User input box
-        self.toC_entry_box = Entry(frame)
+        self.toC_entry_box = Entry(frame, justify=CENTER)
         self.toC_entry_box.grid(row = 1, column = 0, columnspan = 3, sticky="NESW")
         
         # Buttons
         # Calculate button
         self.calculate_button = Button(frame, text = "Calculate", command = self.convert_toC)
-        self.calculate_button.grid(row = 2, column = 0)
+        self.calculate_button.grid(row = 2, column = 0, sticky="NESW")
         
         # Back button (return to main menu)
         self.back_button = Button(frame, text = "Back", command=lambda: self.show_frame("MainFrame"))
-        self.back_button.grid(row = 2, column = 1)
+        self.back_button.grid(row = 2, column = 1, sticky="NESW")
         
         # Reset button
-        self.reset_button = Button(frame, text = "Reset", command = self.reset_entry)
-        self.reset_button.grid(row = 2, column = 2)
+        self.reset_button = Button(frame, text = "Reset", command=lambda: self.reset_entry("celsius"))
+        self.reset_button.grid(row = 2, column = 2, sticky="NESW")
         
         # Result label
-        self.result_label = Label(frame, textvariable = self.to_Cresult)
+        self.result_label = Label(frame, font=FONT1, textvariable = self.to_Cresult)
         self.result_label.grid(row = 3, column = 0, columnspan=3, sticky="NESW")
         
         return frame
@@ -110,31 +132,39 @@ class Program:
         # Set up frame
         frame = Frame(self.container)
         frame.grid(row = 0, column = 0, sticky="NSEW") # We use sticky so that it fills up the whole window
-                
+        
+        # Make all the buttons the same size
+        frame.columnconfigure([0,1,2], minsize=100)
+        
+        # Configure height of entrybox
+        frame.rowconfigure([1], minsize=25)
+        
+        # configure height of buttons
+        frame.rowconfigure([2], minsize=33)
         
         # Heading
-        self.title = Label(frame, text="convert to F")
+        self.title = Label(frame, text="Enter the temperature in Centigrade")
         self.title.grid(row = 0, column = 0, columnspan = 3, sticky="NESW")
         
         # User input box
-        self.entry_box = Entry(frame)
+        self.entry_box = Entry(frame, justify=CENTER)
         self.entry_box.grid(row = 1, column = 0, columnspan = 3, sticky="NESW")
         
         # Buttons
         # Calculate button
         self.calculate_button = Button(frame, text = "Calculate", command = self.convert_toF)
-        self.calculate_button.grid(row = 2, column = 0)
+        self.calculate_button.grid(row = 2, column = 0, sticky="NESW")
         
         # Back button (return to main menu)
         self.back_button = Button(frame, text = "Back", command=lambda: self.show_frame("MainFrame"))
-        self.back_button.grid(row = 2, column = 1)
+        self.back_button.grid(row = 2, column = 1, sticky="NESW")
         
         # Reset button
-        self.reset_button = Button(frame, text = "Reset", command = self.reset_entry)
-        self.reset_button.grid(row = 2, column = 2)
+        self.reset_button = Button(frame, text = "Reset", command=lambda: self.reset_entry("fahrenheit"))
+        self.reset_button.grid(row = 2, column = 2, sticky="NESW")
         
         # Result label
-        self.result_label = Label(frame, textvariable = self.to_Fresult)
+        self.result_label = Label(frame, font=FONT1, textvariable = self.to_Fresult)
         self.result_label.grid(row = 3, column = 0, columnspan=3, sticky="NESW")        
     
         return frame
@@ -142,25 +172,39 @@ class Program:
     
     def convert_toC(self):
         '''Converts temperature from fahrenheit to celsius'''
-        self.fahrenheit = int(self.toC_entry_box.get()) # Get user input
-        result = (self.fahrenheit - 32) * (5/9) # Calculate result
+        try:
+            self.fahrenheit = float(self.toC_entry_box.get()) # Get user input
+            result = (self.fahrenheit - 32) * (5/9) # Calculate result
         
-        self.to_Cresult.set(result) # Change the output label to answer
+            self.to_Cresult.set(f"{result} C") # Change the output label to answer
         
-        
+        except ValueError:
+            self.to_Fresult.set("ERROR: Enter only numbers") # Inform user if input is not valid
+            
+            
     def convert_toF(self):
         '''Converts temperature from celsius to fahrenheit'''
-        self.celsius = int(self.entry_box.get()) # Get user input
-        result = (self.celsius * (9/5)) + 32 # Calculate result
+        try:
+            self.celsius = float(self.entry_box.get()) # Get user input
+            result = ((self.celsius) * (9/5)) + 32 # Calculate result
+            
+            self.to_Fresult.set(f"{result} F") # Change the output label to answer
         
-        self.to_Fresult.set(result) # Change the output label to answer
+        except ValueError:
+            self.to_Fresult.set("ERROR: Enter only numbers") # Inform user if input is not valid
         
         
-    def reset_entry(self):
-        '''Clear entry boxes and output label'''
-        self.entry_box.delete(0, END) # Clears user input
-        self.to_Cresult.set("") # Resets to blank input
-        self.to_Fresult.set("")
+    def reset_entry(self, which_entry_box):
+        '''Clear entry boxes and output label based on which reset button is pressed'''
+        # If we want to clear fahrenheit calculation
+        if which_entry_box == "fahrenheit":
+            self.entry_box.delete(0, END) # Clears user input
+            self.to_Fresult.set("")
+        
+        # If we want to clear celsius calculation
+        elif which_entry_box == "celsius":
+            self.toC_entry_box.delete(0, END)
+            self.to_Cresult.set("") # Resets to blank input
         
         
 # Main program
