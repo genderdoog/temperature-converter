@@ -17,6 +17,14 @@ class Program:
         self.root = Tk()
         self.root.title("Temperature Converter")
         
+        # Initialise the celsius result label
+        self.to_Cresult = IntVar()
+        self.to_Cresult.set("Result will appear here")        
+        
+        # Initialise the fahrenheit result label
+        self.to_Fresult = IntVar()
+        self.to_Fresult.set("Result will appear here")           
+        
         # Container for frames
         self.container = Frame(self.root)
         self.container.grid(row=0,column=0)
@@ -70,17 +78,13 @@ class Program:
         frame = Frame(self.container)
         frame.grid(row = 0, column = 0, sticky="NSEW") # We use sticky so that it fills up the whole window
         
-        # Initialise the result label
-        self.to_Cresult = IntVar()
-        self.to_Cresult.set("Result will appear here (celsius result)") # Set it to nothing when program first starts         
-        
         # Heading
         self.title = Label(frame, text="convert to C")
         self.title.grid(row = 0, column = 0, columnspan = 3, sticky="NESW")
         
         # User input box
-        self.entry_box = Entry(frame)
-        self.entry_box.grid(row = 1, column = 0, columnspan = 3, sticky="NESW")
+        self.toC_entry_box = Entry(frame)
+        self.toC_entry_box.grid(row = 1, column = 0, columnspan = 3, sticky="NESW")
         
         # Buttons
         # Calculate button
@@ -106,10 +110,7 @@ class Program:
         # Set up frame
         frame = Frame(self.container)
         frame.grid(row = 0, column = 0, sticky="NSEW") # We use sticky so that it fills up the whole window
-        
-        # Initialise the result label
-        self.to_Fresult = IntVar()
-        self.to_Fresult.set("Result will appear here (fahrenheit)") # Set it to nothing when program first starts         
+                
         
         # Heading
         self.title = Label(frame, text="convert to F")
@@ -141,7 +142,7 @@ class Program:
     
     def convert_toC(self):
         '''Converts temperature from fahrenheit to celsius'''
-        self.fahrenheit = int(self.entry_box.get()) # Get user input
+        self.fahrenheit = int(self.toC_entry_box.get()) # Get user input
         result = (self.fahrenheit - 32) * (5/9) # Calculate result
         
         self.to_Cresult.set(result) # Change the output label to answer
